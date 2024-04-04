@@ -19,12 +19,18 @@ contract SocialX {
     address[] emptyAddressList;
     uint16 public MAX_TWEET_LENGTH = 280;
 
+    event ContentCreated(
+        uint256 id,
+        address author,
+        string content,
+        uint256 timestamp
+    );
+
     function createPost(string memory _content) public {
         require(
             bytes(_content).length <= MAX_TWEET_LENGTH,
             "Content is too long."
         );
-        require(bytes(_content).length == 0, "Content is too long.");
 
         Post memory newPost = Post({
             id: allPosts.length,
@@ -39,6 +45,12 @@ contract SocialX {
 
         posts[msg.sender].push(newPost);
         allPosts.push(newPost);
+        emit ContentCreated(
+            posts[msg.sender].length,
+            msg.sender,
+            _content,
+            block.timestamp
+        );
     }
 
     function likePost(address _author, uint256 _postId) external {
