@@ -17,8 +17,15 @@ contract SocialX {
     Post[] private allPosts;
 
     address[] emptyAddressList;
+    uint16 public MAX_TWEET_LENGTH = 280;
 
     function createPost(string memory _content) public {
+        require(
+            bytes(_content).length <= MAX_TWEET_LENGTH,
+            "Content is too long."
+        );
+        require(bytes(_content).length == 0, "Content is too long.");
+
         Post memory newPost = Post({
             id: allPosts.length,
             author: msg.sender,
